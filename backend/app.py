@@ -20,7 +20,7 @@ MODEL_SOURCES = {
     "yolo":      ("models/best.pt",             "1spXE62BW4Q6OAEskmU8WxMpZGp7tvEr2")
 }
 
-def download_missing_models():
+download_missing_models():
     for model_name, (rel_path, file_id) in MODEL_SOURCES.items():
         abs_path = os.path.join(BASE_DIR, rel_path)
         if not os.path.exists(abs_path):
