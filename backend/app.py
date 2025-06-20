@@ -216,7 +216,9 @@ def process_image(image_file, model, model_name, label_map):
             "model": model_name,
             "predicted_class": ", ".join(predicted_labels)
         }
-
+@app.route('/')
+def index():
+    return 'Backend is running!'
 
 @app.route("/api/detect", methods=["POST"])
 def detect_single():
