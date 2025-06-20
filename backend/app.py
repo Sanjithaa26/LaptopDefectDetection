@@ -31,7 +31,7 @@ def download_missing_models():
             print(f"{model_name}: download complete")
         else:
             print(f"{model_name}: already present")
-
+def download_missing_models()
 app = Flask(__name__)
 CORS(app)
 
