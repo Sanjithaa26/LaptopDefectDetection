@@ -31,7 +31,6 @@ def download_missing_models():
             print(f"{model_name}: download complete")
         else:
             print(f"{model_name}: already present")
-download_missing_models()
 app = Flask(__name__)
 CORS(app)
 
@@ -316,5 +315,6 @@ def get_classes():
 
 if __name__ == "__main__":
     os.makedirs('models', exist_ok=True)
+    download_missing_models()
     port = int(os.environ.get("PORT", 5000))  # Use PORT Render gives, fallback to 5000 locally
     app.run(host="0.0.0.0", port=port)
