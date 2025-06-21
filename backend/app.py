@@ -75,7 +75,8 @@ def load_model(model_name):
         return model, label_map
 
     elif model_name == "resnet-50":
-        join_files(os.path.join(base_dir, 'models','split_models','best_model_50_4'), os.path.join(base_dir, 'models', 'best_model_50_4'))
+        join_files(os.path.join(base_dir, 'models','split_models','best_model_50_4'), os.path.join(base_dir, 'models', 'best_model_50_4.pth'))
+        print("Loading ResNet-50 model...")
         model = CustomResNet50MultiLabel()
         path = os.path.join(base_dir, 'models', 'best_model_50_4.pth')
         model.load_state_dict(torch.load(path, map_location="cpu"))
@@ -304,6 +305,5 @@ def get_classes():
 
 if __name__ == "__main__":
     os.makedirs('models', exist_ok=True)
-    #download_missing_models()
     port = int(os.environ.get("PORT", 5000))  # Use PORT Render gives, fallback to 5000 locally
-    app.run(host="0.0.0.0", port=port)
+    app.run(host="0.0.0.0", port=port,debug=True)  # Set debug=True for development
