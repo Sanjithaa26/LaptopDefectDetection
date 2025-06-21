@@ -11,8 +11,8 @@ function App() {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  // const BASE_API_URL = 'https://laptopdefectdetection-80r3.onrender.com/api';
-  const BASE_API_URL = 'http://localhost:5000/api'; // Change this to your local API URL if needed
+  const BASE_API_URL = 'https://laptopdefectdetection-80r3.onrender.com/api';
+  // const BASE_API_URL = 'http://localhost:5000/api'; 
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
@@ -96,7 +96,7 @@ function App() {
           setResults([response.data]);
         } else {
           folderImages.forEach(file => formData.append('images', file));
-          const response = await axios.post(`${BASE_API_URL}detect/batch`, formData);
+          const response = await axios.post(`${BASE_API_URL}/detect/batch`, formData);
           setResults(response.data);
         }
       }
