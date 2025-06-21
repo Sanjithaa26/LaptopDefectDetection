@@ -107,13 +107,11 @@ def process_image(image_file, model, model_name, label_map):
     image_file.seek(0)
     image = Image.open(io.BytesIO(image_file.read())).convert("RGB")
 
-    
     if isinstance(model, YOLO):
         image_np = np.array(image)
         image_bgr = cv2.cvtColor(image_np, cv2.COLOR_RGB2BGR)
         image_height, image_width = image_bgr.shape[:2]
         image_overlay = image_bgr.copy()
-
         results = model(image)[0]
         masks = results.masks.data if results.masks else []
         boxes = results.boxes.xyxy.cpu().numpy() if results.boxes else []
@@ -136,6 +134,7 @@ def process_image(image_file, model, model_name, label_map):
                     predicted_labels.append(label_map[class_id])
                 confidences.append(confs[i])
 
+
             # Visualization
                 mask = masks[i].cpu().numpy().astype(np.uint8) * 255
                 mask_resized = cv2.resize(mask, (image_width, image_height), interpolation=cv2.INTER_NEAREST)
@@ -143,6 +142,7 @@ def process_image(image_file, model, model_name, label_map):
                 colored_mask = np.zeros_like(image_bgr)
                 for c in range(3):
                     colored_mask[:, :, c] = color[c]
+
                 alpha = 0.4
                 image_overlay = np.where(mask_resized[:, :, None] == 255,
                                      (1 - alpha) * image_overlay + alpha * colored_mask,
@@ -202,6 +202,11 @@ def process_image(image_file, model, model_name, label_map):
             "predicted_class": ", ".join(predicted_labels)
         }
 
+
+@app.route('/')
+def index():
+    return 'Backend is running!'
+  
 @app.route("/api/detect", methods=["POST"])
 def detect_single():
     if "image" not in request.files or "model_name" not in request.form:
@@ -224,7 +229,6 @@ def detect_single():
 def detect_all_models_single():
     if "image" not in request.files:
         return jsonify({"error": "Missing image"}), 400
-
     image_file = request.files["image"]
     results = {}
 
@@ -298,4 +302,7 @@ def get_classes():
 
 if __name__ == "__main__":
     os.makedirs('models', exist_ok=True)
-    app.run(debug=True, port=5000)
+    #download_missing_models()
+    port = int(os.environ.get("PORT", 5000))  # Use PORT Render gives, fallback to 5000 locally
+    app.run(host="0.0.0.0", port=port)
+
