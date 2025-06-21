@@ -306,4 +306,4 @@ def get_classes():
 if __name__ == "__main__":
     os.makedirs('models', exist_ok=True)
     port = int(os.environ.get("PORT", 5000))  # Use PORT Render gives, fallback to 5000 locally
-    app.run(host="0.0.0.0", port=port,debug=True)  # Set debug=True for development
+    app.run(host="0.0.0.0", port=port)  # Set debug=True for development
