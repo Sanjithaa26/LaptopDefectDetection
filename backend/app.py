@@ -1,3 +1,4 @@
+
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import torch
@@ -11,26 +12,8 @@ from ultralytics import YOLO
 import numpy as np
 import cv2
 import base64
-import os
-import gdown
+from models.splitter.ModelSplit import split_file, join_files
 
-BASE_DIR = os.path.dirname(__file__)
-MODEL_SOURCES = {
-    "resnet-50": ("models/best_model_50_4.pth", "1eBxYEaVMa8E8q8aSDVWe7d_eiAiFfIAL"),
-    "yolo":      ("models/best.pt",             "1spXE62BW4Q6OAEskmU8WxMpZGp7tvEr2")
-}
-
-def download_missing_models():
-    for model_name, (rel_path, file_id) in MODEL_SOURCES.items():
-        abs_path = os.path.join(BASE_DIR, rel_path)
-        if not os.path.exists(abs_path):
-            os.makedirs(os.path.dirname(abs_path), exist_ok=True)
-            url = f"https://drive.google.com/uc?id={file_id}"
-            print(f"{model_name}: downloading to {abs_path} ...")
-            gdown.download(url, abs_path, quiet=False)
-            print(f"{model_name}: download complete")
-        else:
-            print(f"{model_name}: already present")
 app = Flask(__name__)
 CORS(app)
 
@@ -92,6 +75,7 @@ def load_model(model_name):
         return model, label_map
 
     elif model_name == "resnet-50":
+        join_files(os.path.join(base_dir, 'models','split_models','best_model_50_4'), os.path.join(base_dir, 'models', 'best_model_50_4'))
         model = CustomResNet50MultiLabel()
         path = os.path.join(base_dir, 'models', 'best_model_50_4.pth')
         model.load_state_dict(torch.load(path, map_location="cpu"))
@@ -105,6 +89,7 @@ def load_model(model_name):
         return model, label_map
 
     elif model_name == "yolo":
+        join_files(os.path.join(base_dir, 'models','split_models','best'), os.path.join(base_dir, 'models', 'best.pt'))
         path = os.path.join(base_dir, 'models', 'best.pt')
         label_map = {
             0: 'crack',
@@ -122,27 +107,27 @@ def process_image(image_file, model, model_name, label_map):
     image_file.seek(0)
     image = Image.open(io.BytesIO(image_file.read())).convert("RGB")
 
+
     if isinstance(model, YOLO):
         image_np = np.array(image)
         image_bgr = cv2.cvtColor(image_np, cv2.COLOR_RGB2BGR)
         image_height, image_width = image_bgr.shape[:2]
         image_overlay = image_bgr.copy()
-
         results = model(image)[0]
         masks = results.masks.data if results.masks else []
         boxes = results.boxes.xyxy.cpu().numpy() if results.boxes else []
         raw_classes = [int(cls.item()) for cls in results.boxes.cls] if results.boxes else []
         confs = [float(conf.item()) for conf in results.boxes.conf] if results.boxes else []
 
-
-        if len(masks) == 0:
+        if len(masks) == 0 or not raw_classes:
             has_defect = False
             predicted_labels = ["defectless"]
-            confidence=0.0
+            confidence = 0.0
         else:
             has_defect = True
             predicted_labels = []
-            confidences=[]
+            confidences = []
+
             for i, class_id in enumerate(raw_classes):
                 if class_id not in label_map:
                     continue
@@ -156,23 +141,25 @@ def process_image(image_file, model, model_name, label_map):
                 colored_mask = np.zeros_like(image_bgr)
                 for c in range(3):
                     colored_mask[:, :, c] = color[c]
-
                 alpha = 0.4
                 image_overlay = np.where(mask_resized[:, :, None] == 255,
-                                         (1 - alpha) * image_overlay + alpha * colored_mask,
-                                         image_overlay).astype(np.uint8)
+                                     (1 - alpha) * image_overlay + alpha * colored_mask,
+                                     image_overlay).astype(np.uint8)
                 x1, y1, x2, y2 = [int(v) for v in boxes[i]]
                 cv2.putText(image_overlay, f"{label_map[class_id]}", (x1, max(y1 - 10, 0)),
-                            cv2.FONT_HERSHEY_SIMPLEX, 0.6, color, 2, lineType=cv2.LINE_AA)
-            confidence=max(confidences) if confidences else 1.0
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.6, color, 2, lineType=cv2.LINE_AA)
+
+        
+            confidence = round(sum(confidences) / len(confidences), 4) if confidences else 1.0
+
 
         _, buffer = cv2.imencode('.jpg', image_overlay)
         img_base64 = base64.b64encode(buffer.tobytes()).decode('utf-8')
 
         return {
             "filename": image_file.filename,
-            "hasDefect": has_defect,
-            "confidence": round(confidence, 4),
+            "hasDefect": has_defect,            "confidence": confidence,
+
             "label": ", ".join(predicted_labels),
             "model": model_name,
             "predicted_class": ", ".join(predicted_labels),
@@ -185,8 +172,6 @@ def process_image(image_file, model, model_name, label_map):
             raw_output = model(input_tensor)
             output = torch.sigmoid(raw_output.squeeze(0))
 
-
-        
         threshold = 0.5
         detected_indices = (output >= threshold).nonzero(as_tuple=True)[0].tolist()
 
@@ -195,13 +180,13 @@ def process_image(image_file, model, model_name, label_map):
             confidences = output[detected_indices].tolist()
             predicted_labels = [lbl for lbl in predicted_labels_raw if lbl != "defectless"]
 
-            if not predicted_labels:
+            if predicted_labels:
+                has_defect = True
+                confidence = sum(confidences) / len(confidences)
+            else:
                 predicted_labels = ["defectless"]
                 has_defect = False
-                confidence = confidences[predicted_labels_raw.index("defectless")]
-            else:
-                has_defect = True
-                confidence = max(confidences)
+                confidence = confidences[predicted_labels_raw.index("defectless")] if "defectless" in predicted_labels_raw else 0.0
         else:
             predicted_labels = ["defectless"]
             has_defect = False
@@ -215,6 +200,8 @@ def process_image(image_file, model, model_name, label_map):
             "model": model_name,
             "predicted_class": ", ".join(predicted_labels)
         }
+
+
 @app.route('/')
 def index():
     return 'Backend is running!'
@@ -312,6 +299,8 @@ def get_classes():
         return jsonify({"classes": label_map})
     except Exception:
         return jsonify({"error": "Invalid model name"}), 400
+
+
 
 if __name__ == "__main__":
     os.makedirs('models', exist_ok=True)
