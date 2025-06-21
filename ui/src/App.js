@@ -11,6 +11,8 @@ function App() {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const BASE_API_URL = 'https://laptopdefectdetection-80r3.onrender.com/api';
+  // const BASE_API_URL = 'http://localhost:5000/api'; 
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
@@ -51,7 +53,7 @@ function App() {
           // Single image, all models
           const formData = new FormData();
           formData.append('image', image);
-          const response = await axios.post('https://laptopdefectdetection-80r3.onrender.com/api/detect/all', formData);
+            const response = await axios.post(`${BASE_API_URL}/detect/all`, formData);
           
           // Convert the response to array format to match existing UI logic
           const allResults = [];
@@ -63,7 +65,7 @@ function App() {
           // Folder images, all models
           const formData = new FormData();
           folderImages.forEach(file => formData.append('images', file));
-          const response = await axios.post('https://laptopdefectdetection-80r3.onrender.com/api/detect/batch/all', formData);
+          const response = await axios.post(`${BASE_API_URL}/detect/batch/all`, formData);
           
           // Convert the response to format that shows all models for each image
           const organizedResults = [];
@@ -90,11 +92,11 @@ function App() {
         
         if (image) {
           formData.append('image', image);
-          const response = await axios.post('https://laptopdefectdetection-80r3.onrender.com/api/detect', formData);
+          const response = await axios.post(`${BASE_API_URL}/detect`, formData);
           setResults([response.data]);
         } else {
           folderImages.forEach(file => formData.append('images', file));
-          const response = await axios.post('https://laptopdefectdetection-80r3.onrender.com/api/detect/batch', formData);
+          const response = await axios.post(`${BASE_API_URL}/detect/batch`, formData);
           setResults(response.data);
         }
       }

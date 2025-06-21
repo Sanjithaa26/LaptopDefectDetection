@@ -18,6 +18,7 @@ def split_file(input_file_path, output_dir, part_size_mb=15):
             with open(part_filename, 'wb') as outfile:
                 outfile.write(chunk)
             part_num += 1
+    print(f"Split {input_file_path} into {part_num - 1} parts in {output_dir}")
 
 def join_files(input_dir, output_file_path):
     with open(output_file_path, 'wb') as outfile:
@@ -32,5 +33,12 @@ def join_files(input_dir, output_file_path):
             with open(part_filename, 'rb') as infile:
                 outfile.write(infile.read())
             part_num += 1
+    
+    print(f"Joined files into {output_file_path}")
+    
+# input_file = "../best.pt"
+# output_dir = "../split_models/best"
+
+# split_file(input_file, output_dir)
 
 
