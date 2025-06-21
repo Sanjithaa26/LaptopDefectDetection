@@ -107,13 +107,12 @@ def process_image(image_file, model, model_name, label_map):
     image_file.seek(0)
     image = Image.open(io.BytesIO(image_file.read())).convert("RGB")
 
-    
+
     if isinstance(model, YOLO):
         image_np = np.array(image)
         image_bgr = cv2.cvtColor(image_np, cv2.COLOR_RGB2BGR)
         image_height, image_width = image_bgr.shape[:2]
         image_overlay = image_bgr.copy()
-
         results = model(image)[0]
         masks = results.masks.data if results.masks else []
         boxes = results.boxes.xyxy.cpu().numpy() if results.boxes else []
@@ -136,7 +135,6 @@ def process_image(image_file, model, model_name, label_map):
                     predicted_labels.append(label_map[class_id])
                 confidences.append(confs[i])
 
-            # Visualization
                 mask = masks[i].cpu().numpy().astype(np.uint8) * 255
                 mask_resized = cv2.resize(mask, (image_width, image_height), interpolation=cv2.INTER_NEAREST)
                 color = class_colors.get(class_id, (255, 255, 255))
@@ -154,13 +152,14 @@ def process_image(image_file, model, model_name, label_map):
         
             confidence = round(sum(confidences) / len(confidences), 4) if confidences else 1.0
 
+
         _, buffer = cv2.imencode('.jpg', image_overlay)
         img_base64 = base64.b64encode(buffer.tobytes()).decode('utf-8')
 
         return {
             "filename": image_file.filename,
-            "hasDefect": has_defect,
-            "confidence": confidence,
+            "hasDefect": has_defect,            "confidence": confidence,
+
             "label": ", ".join(predicted_labels),
             "model": model_name,
             "predicted_class": ", ".join(predicted_labels),
@@ -201,6 +200,11 @@ def process_image(image_file, model, model_name, label_map):
             "model": model_name,
             "predicted_class": ", ".join(predicted_labels)
         }
+
+
+@app.route('/')
+def index():
+    return 'Backend is running!'
 
 @app.route("/api/detect", methods=["POST"])
 def detect_single():
@@ -296,6 +300,10 @@ def get_classes():
     except Exception:
         return jsonify({"error": "Invalid model name"}), 400
 
+
+
 if __name__ == "__main__":
     os.makedirs('models', exist_ok=True)
-    app.run(debug=True, port=5000)
+    #download_missing_models()
+    port = int(os.environ.get("PORT", 5000))  # Use PORT Render gives, fallback to 5000 locally
+    app.run(host="0.0.0.0", port=port)
