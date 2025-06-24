@@ -75,7 +75,6 @@ def load_model(model_name):
         return model, label_map
 
     elif model_name == "resnet-50":
-        join_files(os.path.join(base_dir, 'models','split_models','best_model_50_4'), os.path.join(base_dir, 'models', 'best_model_50_4.pth'))
         print("Loading ResNet-50 model...")
         model = CustomResNet50MultiLabel()
         path = os.path.join(base_dir, 'models', 'best_model_50_4.pth')
@@ -90,7 +89,6 @@ def load_model(model_name):
         return model, label_map
 
     elif model_name == "yolo":
-        join_files(os.path.join(base_dir, 'models','split_models','best'), os.path.join(base_dir, 'models', 'best.pt'))
         path = os.path.join(base_dir, 'models', 'best.pt')
         label_map = {
             0: 'crack',
@@ -305,5 +303,7 @@ def get_classes():
 
 if __name__ == "__main__":
     os.makedirs('models', exist_ok=True)
-    port = int(os.environ.get("PORT", 5000))  # Use PORT Render gives, fallback to 5000 locally
-    app.run(host="0.0.0.0", port=port)  # Set debug=True for development
+    join_files(os.path.join(os.path.dirname(__file__), 'models','split_models','best_model_50_4'), os.path.join(os.path.dirname(__file__), 'models', 'best_model_50_4.pth'))
+    join_files(os.path.join(os.path.dirname(__file__), 'models','split_models','best'), os.path.join(os.path.dirname(__file__), 'models', 'best.pt'))
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
