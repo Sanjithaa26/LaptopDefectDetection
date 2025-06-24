@@ -169,7 +169,7 @@ def process_image(image_file, model, model_name, label_map):
         input_tensor = transform(image).unsqueeze(0)
         with torch.no_grad():
             raw_output = model(input_tensor)
-            output = torch.sigmoid(raw_output.squeeze(0))
+            output = raw_output.squeeze(0)
 
         threshold = 0.5
         detected_indices = (output >= threshold).nonzero(as_tuple=True)[0].tolist()
