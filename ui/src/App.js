@@ -50,12 +50,12 @@ function App() {
     try {
       if (model === 'All') {
         if (image) {
-          // Single image, all models
+          
           const formData = new FormData();
           formData.append('image', image);
             const response = await axios.post(`${BASE_API_URL}/detect/all`, formData);
           
-          // Convert the response to array format to match existing UI logic
+          
           const allResults = [];
           Object.keys(response.data).forEach(modelName => {
             allResults.push(response.data[modelName]);
@@ -67,7 +67,7 @@ function App() {
           folderImages.forEach(file => formData.append('images', file));
           const response = await axios.post(`${BASE_API_URL}/detect/batch/all`, formData);
           
-          // Convert the response to format that shows all models for each image
+         
           const organizedResults = [];
           const modelNames = Object.keys(response.data);
           const numImages = folderImages.length;
@@ -111,7 +111,7 @@ function App() {
   return (
     <div className="app-wrapper">
       <header className="main-header">
-        <h1>HPE Laptop Defect Detection AI</h1>
+        <h1>HPEFS Laptop Defect Detection AI</h1>
       </header>
       <div className="sidebar">
         <label className="label">Select Model:</label>
