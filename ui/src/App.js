@@ -3,7 +3,7 @@ import axios from 'axios';
 import './App.css';
 
 function App() {
-  const [model, setModel] = useState('MobileNet');
+  const [model, setModel] = useState('MobileNetV2');
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [folderImages, setFolderImages] = useState([]);
@@ -117,8 +117,8 @@ function App() {
         <label className="label">Select Model:</label>
         <select className="dropdown" value={model} onChange={(e) => setModel(e.target.value)}>
           <option value="ResNet-50">ResNet-50</option>
-          <option value="YOLO">YOLOv8</option>
-          <option value="MobileNet">MobileNetV2</option>
+          <option value="YOLOv8">YOLOv8</option>
+          <option value="MobileNetV2">MobileNetV2</option>
           <option value="All">All Models</option>
         </select>
 
@@ -215,6 +215,7 @@ function App() {
               ) : (
                 
                 <div className={`result-tag ${results[idx].hasDefect ? 'defect' : 'no-defect'}`}>
+                  <strong>Model:</strong> {results[idx].model}<br />
                   <strong>Status:</strong> {results[idx].hasDefect ? 'Defect Found' : 'No Defect Found'}<br />
                   {results[idx].hasDefect && results[idx].predicted_class && (
                     <>

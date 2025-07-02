@@ -61,7 +61,7 @@ def load_model(model_name):
     model_name = model_name.lower()
     base_dir = os.path.dirname(__file__)
 
-    if model_name == "mobilenet":
+    if model_name == "mobilenetv2":
         model = CustomMobileNetMultiLabel()
         path = os.path.join(base_dir, 'models', 'best_model_final1.pth')
         model.load_state_dict(torch.load(path, map_location="cpu"))
@@ -88,7 +88,7 @@ def load_model(model_name):
         model.eval()
         return model, label_map
 
-    elif model_name == "yolo":
+    elif model_name == "yolov8":
         path = os.path.join(base_dir, 'models', 'best.pt')
         label_map = {
             0: 'crack',
@@ -235,7 +235,7 @@ def detect_all_models_single():
     results = {}
 
     try:
-        for model_name in ["yolo", "resnet-50", "mobilenet"]:
+        for model_name in ["YOLOv8", "ResNet-50", "MobileNetV2"]:
             image_file.stream.seek(0)  # Reset file pointer
             model, label_map = load_model(model_name)
             result = process_image(image_file, model, model_name, label_map)
@@ -254,10 +254,10 @@ def detect_all_models_batch():
         return jsonify({"error": "Missing images"}), 400
 
     image_files = request.files.getlist("images")
-    all_results = {"yolo": [], "resnet-50": [], "mobilenet": []}
+    all_results = {"YOLOv8": [], "ResNet-50": [], "MobileNetV2": []}
 
     try:
-        for model_name in ["yolo", "resnet-50", "mobilenet"]:
+        for model_name in ["YOLOv8", "ResNet-50", "MobileNetV2"]:
             model, label_map = load_model(model_name)
             for image_file in image_files:
                 image_file.stream.seek(0)  # Reset file pointer
