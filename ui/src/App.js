@@ -12,7 +12,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const BASE_API_URL = 'https://laptopdefectdetection-80r3.onrender.com/api';
-  // const BASE_API_URL = 'http://localhost:5000/api'; 
+  // const BASE_API_URL = 'http://localhost:5000/api';
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
@@ -145,8 +145,8 @@ function App() {
             <div className="preview-with-result">
               <img
                 src={
-                  results.find(r => r.model && r.model.toLowerCase() === "yolo")?.annotated_image_base64
-                    ? `data:image/jpeg;base64,${results.find(r => r.model && r.model.toLowerCase() === "yolo").annotated_image_base64}`
+                  results.find(r => r.model && r.model.toLowerCase() === "yolov8")?.annotated_image_base64
+                    ? `data:image/jpeg;base64,${results.find(r => r.model && r.model.toLowerCase() === "yolov8").annotated_image_base64}`
                     : imagePreview
                 }
                 alt="Uploaded"
@@ -175,10 +175,10 @@ function App() {
                 src={
                  
                   model === 'All' && Array.isArray(results[idx])
-                    ? (results[idx].find(r => r.model && r.model.toLowerCase() === "yolo" && r.annotated_image_base64)?.annotated_image_base64
-                        ? `data:image/jpeg;base64,${results[idx].find(r => r.model && r.model.toLowerCase() === "yolo").annotated_image_base64}`
+                    ? (results[idx].find(r => r.model && r.model.toLowerCase() === "yolov8" && r.annotated_image_base64)?.annotated_image_base64
+                        ? `data:image/jpeg;base64,${results[idx].find(r => r.model && r.model.toLowerCase() === "yolov8").annotated_image_base64}`
                         : src)
-                    : (results[idx].model && results[idx].model.toLowerCase() === "yolo" && results[idx].annotated_image_base64
+                    : (results[idx].model && results[idx].model.toLowerCase() === "yolov8" && results[idx].annotated_image_base64
                         ? `data:image/jpeg;base64,${results[idx].annotated_image_base64}`
                         : src)
                 }
