@@ -105,7 +105,7 @@ npm start
     Open your browser and go to [http://localhost:3000](http://localhost:3000).
 
 4. **Upload images**  
-    Use the interface to upload images or folders, select models, and view results.
+    Use the interface to upload images or folders, select models and view results.
 
 ---
 
@@ -116,10 +116,10 @@ npm start
 ## Contributors
 
 - [Sanjitha R](https://github.com/Sanjithaa26)
-- Kiruthika Sermadurai
-- Vinithaa P
-- Durga G
-- Gayathri R
+- [Kiruthika Sermadurai](https://github.com/kiruthikasermadurai)
+- [Vinithaa P](https://github.com/vinithaapalanisamy)
+- [Durga G](https://github.com/Durgaganapathi)
+- [Gayathri R](https://github.com/Gayathri4705)
 
     
 ---
