@@ -114,7 +114,7 @@ npm start
 ---
 
 ## Contributors
-    Sanjitha R - [https://github.com/Sanjithaa26]
+    Sanjitha R - [https://github.com/Sanjithaa26](https://github.com/Sanjithaa26)
     Kiruthika Sermadurai
     Vinithaa P
     Durga G
