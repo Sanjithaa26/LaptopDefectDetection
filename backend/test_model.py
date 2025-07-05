@@ -3,9 +3,7 @@ import torch.nn as nn
 from torchvision import models, transforms
 from PIL import Image
 
-# -------------------------------
-# Define the exact same model used for training
-# -------------------------------
+
 class CustomResNet50(nn.Module):
     def __init__(self):
         super(CustomResNet50, self).__init__()
@@ -26,32 +24,24 @@ class CustomResNet50(nn.Module):
     def forward(self, x):
         return self.resnet(x)
 
-# -------------------------------
-# Load the model
-# -------------------------------
+
 model = CustomResNet50()
 model.load_state_dict(torch.load("models/resnet50_model.pth", map_location="cpu"))
 model.eval()
 
-# -------------------------------
-# Image preprocessing
-# -------------------------------
+
 transform = transforms.Compose([
     transforms.Resize((224, 224)),
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])  # Match your training normalization
 ])
 
-# -------------------------------
-# Load image for testing
-# -------------------------------
+
 image_path = "img6.jpg"  # Replace with your test image
 image = Image.open(image_path).convert("RGB")
 image = transform(image).unsqueeze(0)  # Add batch dimension
 
-# -------------------------------
-# Make prediction
-# -------------------------------
+
 with torch.no_grad():
     output = model(image)
     probs = torch.softmax(output, dim=1)
