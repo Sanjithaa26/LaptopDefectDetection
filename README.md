@@ -9,93 +9,55 @@
 [![Frontend](https://img.shields.io/badge/Frontend-React-green)](https://react.dev/)
 [![Models](https://img.shields.io/badge/Models-YOLOv8%20%7C%20ResNet50%20%7C%20MobileNetV2-purple)]()
 [![Deploy](https://img.shields.io/badge/Deployed%20On-Render-green)](https://render.com/)
-[![Dataset](https://img.shields.io/badge/Dataset-Roboflow-orange)](https://universe.roboflow.com/team-ks/broken-laptop-parts/images/)
+[![Dataset](https://img.shields.io/badge/Dataset-Roboflow%20%7C%20Kaggle%20%7C%20Amazon%20%7C%20Flipkart%20%7C%20Google-orange)]()
 
 </div>
 
 ---
 
-# 💻 Laptop Defect Detection AI
+# Laptop Defect Detection AI
 
-An end-to-end AI-powered web application for identifying laptop defects using computer vision and deep learning. The system supports real-time detection from single images or batch uploads, powered by three models: **ResNet-50**, **YOLOv8**, and **MobileNetV2**.
-
-🌟 Ideal for quality control teams in laptop manufacturing, refurbishing, or repair sectors.
-
----
-
-## 🔍 Features
-
-- 📦 **Upload Options**: Upload single image or entire folders.
-- 🔀 **Model Selection**: Choose between ResNet-50, YOLOv8, MobileNetV2 or run all at once.
-- 📸 **Visual Feedback**: Displays annotated images (YOLO) and prediction details.
-- 📈 **Confidence Scores**: Clear metrics with predicted class and model-wise results.
-- 🔁 **Batch Mode**: Automatically processes folders of images in one go.
-- 🧠 **Multi-label & Binary Classification**: MobileNet handles multi-label (type-wise) defect detection, others perform binary classification.
+This project is an end-to-end web application that leverages deep learning and computer vision to automatically detect defects in laptop images. 
+Users can upload individual images or entire folders of laptop photos, select from three models (ResNet-50, YOLOv8, MobileNetV2) and receive instant predictions about the presence and type of defects. 
+The backend is powered by trained neural networks, while the frontend provides an intuitive interface for uploading, processing and visualizing results, including annotated images and confidence scores. 
+This tool streamlines quality control for laptop hardware by enabling fast, automated and accurate defect identification.
 
 ---
 
-## 📸 Sample Datasets
+## Features
 
-- 🔧 **With Defects**: [Roboflow Defective Laptops Dataset](https://universe.roboflow.com/team-ks/broken-laptop-parts/images/)
-- ✅ **Without Defects**: [Roboflow Clean Laptops Dataset](https://universe.roboflow.com/team-ks/broken-laptop-parts/images/)
-
----
-
-## 🚀 Demo
-
-Watch the web app in action:
-
-> ⚠️ _Insert your demo video or hosted app link here if available_
+- **Upload Options**: Upload single image or an entire folder.
+- **Model Selection**: Choose between ResNet-50, YOLOv8, MobileNetV2 or run all at once.
+- **Visual Feedback**: Displays annotated images (YOLO) and prediction details.
+- **Confidence Scores**: Clear metrics with predicted class and model-wise results.
+- **Batch Mode**: Automatically processes folders of images in one go.
+- **Multi-label Classification**: All the three models handle multi-label (detect all the defects present in the image) defect detection.
 
 ---
 
-## 🧠 Models Used
+## Sample Datasets
 
-| Model        | Purpose                            | Type                     |
-|--------------|------------------------------------|--------------------------|
-| **ResNet-50** | Defect or No Defect                | Binary Classification    |
-| **YOLOv8**    | Object-level defect detection + annotation | Object Detection     |
-| **MobileNetV2** | Detect specific types of defects (e.g. keyboard crack, screen damage) | Multi-label Classification |
+- **With Defects**: [Roboflow Defective Laptops Dataset](https://universe.roboflow.com/team-ks/broken-laptop-parts/images/)
+- **Without Defects**: [Roboflow Clean Laptops Dataset](https://universe.roboflow.com/team-ks/broken-laptop-parts/images/)
 
 ---
 
-## 🛠️ Installation
-
-### 🧰 Backend (Flask + Torch + YOLO)
-
-```bash
-git clone https://github.com/yourusername/laptop-defect-detection.git
-cd backend
-pip install -r requirements.txt
-python app.py
-```
-### 🌐 Frontend (React)
-
-```bash
-cd ../frontend
-npm install
-npm start
-```
 
 ---
 
-## ⚙️ Usage
+## Models Used
 
-1. **Start the backend server**  
-    Run the Flask backend as shown above.
-
-2. **Start the frontend**  
-    Launch the React app in a separate terminal.
-
-3. **Access the app**  
-    Open your browser and go to [http://localhost:3000](http://localhost:3000).
-
-4. **Upload images**  
-    Use the interface to upload images or folders, select models, and view results.
+| Model        | Primary Role                            |
+|--------------|------------------------------------|
+| **ResNet-50** | Hard-to-see and fine defects detection     |
+| **YOLOv8**    | Detects multiple defects with exact shape and location using segementation |
+| **MobileNetV2** | Quick multi-label defect classification as model is lightweight |
 
 ---
 
-## 📂 Project Structure
+---
+
+## Project Structure
 
 ```
 LaptopDefectDetection/
@@ -111,20 +73,64 @@ LaptopDefectDetection/
 
 ---
 
-## 📝 Contributing
+## Installation
 
-Contributions are welcome!  
-Feel free to open issues or submit pull requests for improvements and bug fixes.
+### Backend (Flask + Torch + YOLO)
+
+```bash
+git clone https://github.com/yourusername/laptop-defect-detection.git
+cd backend
+pip install -r requirements.txt
+python app.py
+```
+### Frontend (React)
+
+```bash
+cd ../frontend
+npm install
+npm start
+```
 
 ---
 
-## 📄 License
+## Usage
+
+1. **Start the backend server**  
+    Run the Flask backend as shown above.
+
+2. **Start the frontend**  
+    Launch the React app in a separate terminal.
+
+3. **Access the app**  
+    Open your browser and go to [http://localhost:3000](http://localhost:3000).
+
+4. **Upload images**  
+    Use the interface to upload images or folders, select models and view results.
+
+---
+
+
+
+---
+
+## Contributors
+
+- [Sanjitha R](https://github.com/Sanjithaa26)
+- [Kiruthika Sermadurai](https://github.com/kiruthikasermadurai)
+- [Vinithaa P](https://github.com/vinithaapalanisamy)
+- [Durga G](https://github.com/Durgaganapathi)
+- [Gayathri R](https://github.com/Gayathri4705)
+
+    
+---
+
+## License
 
 This project is licensed under the [MIT License](LICENSE).
 
 ---
 
-## 🙏 Acknowledgements
+## Acknowledgements
 
 - [Roboflow](https://roboflow.com/) for datasets
 - [Ultralytics YOLO](https://github.com/ultralytics/ultralytics)
