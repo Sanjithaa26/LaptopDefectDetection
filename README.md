@@ -9,7 +9,7 @@
 [![Frontend](https://img.shields.io/badge/Frontend-React-green)](https://react.dev/)
 [![Models](https://img.shields.io/badge/Models-YOLOv8%20%7C%20ResNet50%20%7C%20MobileNetV2-purple)]()
 [![Deploy](https://img.shields.io/badge/Deployed%20On-Render-green)](https://render.com/)
-[![Dataset](https://img.shields.io/badge/Dataset-Roboflow-orange)](https://universe.roboflow.com/team-ks/broken-laptop-parts/images/)
+[![Dataset](https://img.shields.io/badge/Dataset-Roboflow%20%7C%20Kaggle%20%7C%20Amazon%20%7C%20Flipkart%20%7C%20Google-orange)]
 
 </div>
 
