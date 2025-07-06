@@ -65,7 +65,7 @@ LaptopDefectDetection/
 │   ├── app.py
 │   ├── models/
 │   └── requirements.txt
-├── frontend/
+├── ui/
 │   ├── src/
 │   └── package.json
 └── README.md
@@ -86,7 +86,7 @@ python app.py
 ### Frontend (React)
 
 ```bash
-cd ../frontend
+cd ../ui
 npm install
 npm start
 ```
