@@ -88,7 +88,7 @@ python app.py
 ```bash
 cd ../ui
 npm install
-npm start
+set NODE_OPTIONS=--openssl-legacy-provider&&npm start
 ```
 
 ---
