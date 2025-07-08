@@ -50,7 +50,7 @@ This tool streamlines quality control for laptop hardware by enabling fast, auto
 | Model        | Primary Role                            |
 |--------------|------------------------------------|
 | **ResNet-50** | Hard-to-see and fine defects detection     |
-| **YOLOv8**    | Detects multiple defects with exact shape and location using segementation |
+| **YOLOv8**    | Detects multiple defects with exact shape and location using segmentation |
 | **MobileNetV2** | Quick multi-label defect classification as model is lightweight |
 
 ---
@@ -78,7 +78,7 @@ LaptopDefectDetection/
 ### Backend (Flask + Torch + YOLO)
 
 ```bash
-git clone https://github.com/yourusername/laptop-defect-detection.git
+git clone https://github.com/Sanjithaa26/LaptopDefectDetection
 cd backend
 pip install -r requirements.txt
 python app.py
@@ -122,12 +122,6 @@ npm start
 - [Gayathri R](https://github.com/Gayathri4705)
 
     
----
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
-
 ---
 
 ## Acknowledgements
